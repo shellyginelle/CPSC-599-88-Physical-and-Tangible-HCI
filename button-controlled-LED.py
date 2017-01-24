@@ -1,58 +1,40 @@
+#!/usr/bin/python
+import os
 import RPi.GPIO as GPIO ## Import GPIO Library
 from time import sleep ## Import 'time' library.  Allows us to use 'sleep'
 
 GPIO.setmode(GPIO.BOARD) ## Use BOARD pin numbering
 
-GPIO.setup(16, GPIO.IN) ## Setup GPIO pin 16 to IN (button 1)
-GPIO.setup(18, GPIO.IN) ## Setup GPIO pin 18 to IN (button 2)
+GPIO.setup(10, GPIO.IN) ## Setup GPIO pin 16 to IN (button 1)
 
-GPIO.setup(11, GPIO.OUT) ## Setup GPIO pin 11 to OUT (LED 1)
-GPIO.setup(13, GPIO.OUT) ## Setup GPIO pin 13 to OUT (LED 2)
-GPIO.output(11, GPIO.LOW)
-GPIO.output(13, GPIO.LOW)
+GPIO.setup(17, GPIO.OUT) ## Setup GPIO pin 11 to OUT (LED 1)
+GPIO.setup(27, GPIO.OUT) ## Setup GPIO pin 13 to OUT (LED 2)
+GPIO.output(17, GPIO.LOW) ## LED 1 Off
+GPIO.output(27, GPIO.LOW) ## LED 2 Off
 
-# State – decides what LED should be on and off
-state = 0
+print("--------------")
+print(" Button + GPIO ")
+print("--------------")
 
-# Increment – the direction of states
-inc = 1
-
+print GPIO.input(10)
 while True:
-
-# State toggle button is pressed
-if ( GPIO.input(16) == True ):
-
-if (inc == 1):
-state = state + 1;
-else:
-state = state – 1;
-
-# Reached the max state, time to go back (decrement)
-if (state == 2):
-inc = 0
-# Reached the min state, go back up (increment)
-elif (state == 0):
-inc = 1
-
-if (state == 1):
-GPIO.output(11, GPIO.HIGH)
-GPIO.output(13, GPIO.LOW)
-elif (state == 2):
-GPIO.output(11, GPIO.HIGH)
-GPIO.output(13, GPIO.HIGH)
-else:
-GPIO.output(11, GPIO.LOW)
-GPIO.output(13, GPIO.LOW)
-print(“pressed B1 “, state)
-
-# Reset button is pressed
-if ( GPIO.input(18) == True ):
-
-state = 0
-inc = 1
-GPIO.output(11, GPIO.LOW)
-GPIO.output(13, GPIO.LOW)
-
-print(“pressed B2 “, state)
-
-sleep(0.2);
+    if ( GPIO.input(10) == False):
+        print ("Button Pressed")
+        os.system('date')
+        GPIO.output(17, GPIO.HIGH) #Blink 
+        GPIO.output(27, GPIO.LOW)
+        sleep(1)
+        GPIO.output(17, GPIO.LOW)
+        GPIO.output(27, GPIO.HIGH)
+        sleep(1)
+        GPIO.output(17, GPIO.HIGH)
+        GPIO.output(27, GPIO.LOW)
+        sleep(1)
+        GPIO.output(17, GPIO.LOW)
+        GPIO.output(27, GPIO.HIGH)
+        print GPIO.input(10)
+        sleep(5)
+    else:
+        os.system('clear')
+        print ("Watiing for you to press a button")
+sleep(1)
