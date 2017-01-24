@@ -3,35 +3,22 @@ import os
 import RPi.GPIO as GPIO ## Import GPIO Library
 from time import sleep ## Import 'time' library.  Allows us to use 'sleep'
 
-GPIO.setmode(GPIO.BOARD) ## Use BOARD pin numbering
+GPIO.setwarnings(False)
 
-GPIO.setup(10, GPIO.IN) ## Setup GPIO pin 16 to IN (button 1)
+GPIO.setmode(GPIO.BCM) ## Use BOARD pin numbering
 
-GPIO.setup(17, GPIO.OUT) ## Setup GPIO pin 11 to OUT (LED 1)
-GPIO.setup(27, GPIO.OUT) ## Setup GPIO pin 13 to OUT (LED 2)
-GPIO.output(17, GPIO.LOW) ## LED 1 Off
-GPIO.output(27, GPIO.LOW) ## LED 2 Off
-
-print("--------------")
-print(" Button + GPIO ")
-print("--------------")
+GPIO.setup(10, GPIO.IN) ## Setup GPIO pin 10 to IN (button 1)
+GPIO.setup(18, GPIO.OUT) ## Setup GPIO pin 18 to OUT (LED 1)
 
 print GPIO.input(10)
 while True:
-    if ( GPIO.input(10) == False):
+    if (GPIO.input(10)):    
         print ("Button Pressed")
-        os.system('date')
-        GPIO.output(17, GPIO.HIGH) #Blink 
-        GPIO.output(27, GPIO.LOW)
+        GPIO.output(18, GPIO.LOW)
         sleep(1)
-        GPIO.output(17, GPIO.LOW)
-        GPIO.output(27, GPIO.HIGH)
+        GPIO.output(18, GPIO.HIGH)
         sleep(1)
-        GPIO.output(17, GPIO.HIGH)
-        GPIO.output(27, GPIO.LOW)
-        sleep(1)
-        GPIO.output(17, GPIO.LOW)
-        GPIO.output(27, GPIO.HIGH)
+        GPIO.output(18, GPIO.LOW)
         print GPIO.input(10)
         sleep(5)
     else:
